@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Run the map server --> 
+	<!-- node name="map_server" pkg="map_server" type="map_server" args="$(find my_map_package)/my_map.pgm my_map_resolution"/ -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find ugv_nav)/maps/blank_map.yaml"/>
+
+	<!-- Load the urdf into the parameter server. -->
+	<param name="robot_description" textfile="$(find ugv_nav)/urdf/p3dx.urdf"/>
+
+	<!-- robot state publisher -->
+	<node pkg="robot_state_publisher" type="robot_state_publisher" name="rob_st_pub"/>
+
+	<!-- Run a static transform between /odom and /map -->
+	<node pkg="tf" type="static_transform_publisher" name="odom_map_broadcaster" args="0 0 0 0 0 0 /map /base_odom_frame 100" />
+
+	<!-- Odometry using T265 -->
+	<include file="$(find ugv_nav)/launch/camera_t265.launch" />
+
+	<!-- Point Cloud (sensor) using d455-->
+	<include file="$(find ugv_nav)/launch/camera_d455.launch" />
+
+	<!--- Run AMCL --> 
+	<!-- <include file="$(find amcl)/examples/amcl_diff.launch" /> -->
+
+
+	<!-- <include file="$(find ugv_nav)/launch/move_base.launch" /> -->
+	<!-- Move Base Node-->
+	<!-- <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find ugv_nav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+		<rosparam file="$(find ugv_nav)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find ugv_nav)/config/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find ugv_nav)/config/global_costmap_params.yaml" command="load" /> 
+		<rosparam file="$(find ugv_nav)/config/base_local_planner_params.yaml" command="load" />
+	</node> -->
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find ugv_nav)/config/map_robo.rviz"/>
+
+</launch>

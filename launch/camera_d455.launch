@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="serial_no"             default="141322252394"/>
+	<arg name="device_type"           default="d455"/>
+	<arg name="json_file_path"        default=""/>
+	<arg name="camera"                default="camera_d455"/>
+
+	<group ns="$(arg camera)">
+		<!-- <remap from="/camera_d455/depth/color/points" to="/sensors/point_cloud"/> -->
+		<include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+			<arg name="serial_no"         value="$(arg serial_no)"/>
+			<arg name="device_type"              value="$(arg device_type)"/>
+			<arg name="json_file_path"    value="$(arg json_file_path)"/>
+
+			<arg name="enable_depth"      value="true"/>
+			<arg name="depth_width"       value="640"/>
+			<arg name="depth_height"      value="480"/>
+			<arg name="depth_fps"         value="30"/>
+
+			<arg name="enable_color"      value="true"/>
+			<arg name="color_width"       value="640"/>
+			<arg name="color_height"      value="480"/>
+			<arg name="color_fps"         value="30"/>
+
+			<arg name="enable_infra1"     value="false"/>
+			<arg name="enable_infra2"     value="false"/>
+			<arg name="enable_fisheye"    value="false"/>
+			<arg name="enable_gyro"       value="false"/>
+			<arg name="enable_accel"      value="false"/>
+
+			<arg name="enable_pointcloud" value="true"/>
+			<arg name="enable_sync"       value="true"/>
+			<arg name="align_depth"       value="false"/>
+			<arg name="clip_distance"     value="-1"/>
+
+			<arg name="tf_prefix"         value="$(arg camera)"/>
+		</include>
+
+	</group>
+</launch>

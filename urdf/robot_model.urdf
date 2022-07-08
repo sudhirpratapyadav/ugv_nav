@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot name="p3dx">
+
+	<include filename="$(find ugv_nav)/urdf/p3dx_urdfs/materials.xacro"/>
+
+	<link name="base_link">
+		<inertial>
+			<origin xyz="0 0 0" />
+			<mass value="9.0" />
+			<inertia  ixx="0.166875" ixy="0.0"  ixz="0.0"  iyy="0.234375"  iyz="0.0"  izz="0.3075" />
+		</inertial>
+		<visual>
+			<origin xyz="0 0 0"/>
+			<geometry>
+				<box size="0.5 0.4 0.25" />
+			</geometry>
+			<material name="red"/>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0"/>
+			<geometry>
+				<box size="0.5 0.4 0.25" />
+			</geometry>
+		</collision>
+
+	</link>
+
+	<link name="camera_d455_link">
+		<inertial>
+			<origin xyz="0 0 0" />
+			<mass value="0.1" />
+			<inertia  ixx="0.000015" ixy="0.0"  ixz="0.0"  iyy="0.000138"  iyz="0.0"  izz="0.000138" />
+		</inertial>
+
+		<visual>
+			<origin xyz="0 0 0"/>
+			<geometry>
+				<box size="0.125 0.03 0.03" />
+			</geometry>
+			<material name="blue"/>
+		</visual>
+
+		<collision>
+			<origin xyz="0 0 0"/>
+			<geometry>
+				<box size="0.125 0.03 0.03" />
+			</geometry>
+		</collision>
+	</link>
+
+	<link name="camera_t265_link">
+		<inertial>
+			<origin xyz="0 0 0" />
+			<mass value="0.1" />
+			<inertia  ixx="0.000015" ixy="0.0"  ixz="0.0"  iyy="0.000138"  iyz="0.0"  izz="0.000138" />
+		</inertial>
+
+		<visual>
+			<origin xyz="0 0 0"/>
+			<geometry>
+				<box size="0.125 0.03 0.03" />
+			</geometry>
+			<material name="green"/>
+		</visual>
+
+		<collision>
+			<origin xyz="0 0 0"/>
+			<geometry>
+				<box size="0.125 0.03 0.03" />
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_to_camera_d455_joint" type="fixed">
+		<origin xyz="0.24 0.0 0.15" rpy="1.57 0 1.57"/>
+		<parent link="base_link"/>
+		<child link="camera_d455_link"/>
+	</joint>
+
+	<joint name="camera_t265_to_base_joint" type="fixed">
+		<origin xyz="0 0 -0.15" rpy="0 0 0"/>
+		<parent link="camera_t265_link"/>
+		<child link="base_link"/>
+	</joint>
+
+
+	<gazebo reference="base_link">
+		<material>Gazebo/Red</material>
+	</gazebo>
+
+	<gazebo reference="camera_d455_link">
+		<material>Gazebo/Blue</material>
+	</gazebo>
+
+	<gazebo reference="camera_t265_link">
+		<material>Gazebo/Green</material>
+	</gazebo>
+
+
+</robot>
